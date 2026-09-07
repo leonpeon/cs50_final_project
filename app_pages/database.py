@@ -15,3 +15,11 @@ class Database:
         self.db.execute("INSERT INTO ideas (idea, tag, date) VALUES (?, ?, ?)", (text_field.toPlainText(), tag.currentText(), self.date))
         self.connection.commit()
         text_field.clear()
+
+
+    def view_ideas(self):
+        ideas = self.db.execute("SELECT idea, date, tag, favourite, completed FROM ideas").fetchall()
+        return ideas
+
+    def delete_ideas(self):
+        pass
