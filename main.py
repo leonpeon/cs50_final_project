@@ -20,7 +20,7 @@
 # 6. Settings: set word limit, colours, send notification.
 #       - Settings page to manage word limit, GUI colours, and email notifications
 
-from PySide6.QtWidgets import (QApplication, QLabel, QLayout, QGroupBox, QTextEdit, 
+from PySide6.QtWidgets import (QApplication, QComboBox, QLabel, QLayout, QGroupBox, QTextEdit, 
                                QMainWindow, QStackedWidget, QPushButton, QWidget, 
                                QVBoxLayout, QHBoxLayout)
 from PySide6.QtCore import QCalendar, Qt
@@ -54,8 +54,18 @@ class MainWindow(QMainWindow):
         submit_button = QPushButton("Save")
         submit_button.clicked.connect(lambda: self.clear_idea(idea_text_box))
 
+        tags_combobox = QComboBox(placeholderText="Add tag", duplicatesEnabled=False)
+        tags_combobox.addItems([
+            "No tag",
+            "Software",
+            "Games",
+            "Stories",
+            "Misc"
+        ])
+
         home_page_layout.addWidget(home_title, alignment=Qt.AlignCenter)
         home_page_layout.addWidget(idea_text_box, alignment=Qt.AlignCenter)
+        home_page_layout.addWidget(tags_combobox, alignment=Qt.AlignCenter)
         home_page_layout.addWidget(submit_button)
 
 
@@ -143,7 +153,7 @@ class MainWindow(QMainWindow):
         streak = menubar.addAction("Streak")
         streak.triggered.connect(self.show_streak_page)
 
-        quit = menubar.addAction("Quit")
+        quit = menubar.addAction("X")
         quit.triggered.connect(lambda: self.close())
 
     def show_home_page(self):
