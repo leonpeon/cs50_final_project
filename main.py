@@ -26,6 +26,7 @@ from PySide6.QtWidgets import (QApplication, QLabel, QLayout, QGroupBox, QTextEd
 from PySide6.QtCore import QCalendar, Qt
 from PySide6.QtGui import QFont
 from random import choice
+import sqlite3
 
 
 class MainWindow(QMainWindow):
@@ -35,11 +36,13 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Lightbulb Factory")
         self.showFullScreen()
         title_font = QFont()
+        title_font.setPointSize(40)
+        word_font = QFont()
+        word_font.setPointSize(24)
 
         # HOME PAGE
         # TODO: Update GUI, save idea to a SQL database
         self.home_page = QWidget()
-        title_font.setPointSize(40)
 
         home_page_layout = QVBoxLayout(self.home_page)
         home_title = QLabel("Welcome to the factory")
@@ -71,6 +74,7 @@ class MainWindow(QMainWindow):
 
         for label in [label1, label2, label3]:
             label.setAlignment(Qt.AlignCenter)
+            label.setFont(word_font)
             prompt_frame_layout.addWidget(label)
 
         spark_button = QPushButton("Generate")
@@ -82,17 +86,43 @@ class MainWindow(QMainWindow):
 
 
         # VIEW PAGE
+        self.view_page = QWidget()
+        view_page_layout = QVBoxLayout(self.view_page)
+
+        view_page_title = QLabel("Your Ideas Archive")
+        view_page_title.setFont(title_font)
+
+        view_page_layout.addWidget(view_page_title)
+        
 
         # COMPLETED PAGE
+        self.completed_page = QWidget()
+        completed_page_layout = QVBoxLayout(self.completed_page)
+
+        completed_page_title = QLabel("Completed Ideas")
+        completed_page_title.setFont(title_font)
+
+        completed_page_layout.addWidget(completed_page_title)
 
         # STREAK PAGE
+        self.streak_page = QWidget()
+        streak_page_layout = QVBoxLayout(self.streak_page)
 
+        streak_page_title = QLabel("Keep on shining")
+        streak_page_title.setFont(title_font)
+
+        streak_page_layout.addWidget(streak_page_title)
 
 
         # Create stacked widget
         self.pages = QStackedWidget()
         self.pages.addWidget(self.home_page)
         self.pages.addWidget(self.prompt_page)
+        self.pages.addWidget(self.view_page)
+        self.pages.addWidget(self.completed_page)
+        self.pages.addWidget(self.streak_page)
+
+
 
         self.setCentralWidget(self.pages)
 
@@ -105,8 +135,13 @@ class MainWindow(QMainWindow):
         spark.triggered.connect(self.show_spark_page)
 
         view = menubar.addAction("View")
+        view.triggered.connect(self.show_view_page)
+
         completed = menubar.addAction("Completed")
+        completed.triggered.connect(self.show_completed_page)
+
         streak = menubar.addAction("Streak")
+        streak.triggered.connect(self.show_streak_page)
 
         quit = menubar.addAction("Quit")
         quit.triggered.connect(lambda: self.close())
@@ -116,6 +151,15 @@ class MainWindow(QMainWindow):
 
     def show_spark_page(self):
         self.pages.setCurrentWidget(self.prompt_page)
+
+    def show_view_page(self):
+        self.pages.setCurrentWidget(self.view_page)
+
+    def show_completed_page(self):
+        self.pages.setCurrentWidget(self.completed_page)
+
+    def show_streak_page(self):
+            self.pages.setCurrentWidget(self.streak_page)
 
     # FUNCTIONS FOR HOME PAGE
     def clear_idea(self, text_field):
