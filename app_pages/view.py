@@ -3,9 +3,10 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QLabel, QLayout, QGroupB
                                QVBoxLayout, QHBoxLayout)
 from PySide6.QtCore import QCalendar, Qt
 from PySide6.QtGui import QFont
+import sqlite3
 
 class ViewPage(QWidget):
-    def __init__(self):
+    def __init__(self, db):
         super().__init__()
         self.title_font = QFont()
         self.title_font.setPointSize(40)

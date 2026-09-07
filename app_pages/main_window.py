@@ -8,16 +8,16 @@ from app_pages.completed import CompletedPage
 from app_pages.streak import StreakPage
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, database):
         super().__init__()
 
         self.setWindowTitle("Lightbulb Factory")
         self.showFullScreen()
 
         # Initialise pages
-        self.home_page = HomePage()
+        self.home_page = HomePage(database)
         self.prompt_page = SparkPage()
-        self.view_page = ViewPage()
+        self.view_page = ViewPage(database)
         self.completed_page = CompletedPage()
         self.streak_page = StreakPage()
 

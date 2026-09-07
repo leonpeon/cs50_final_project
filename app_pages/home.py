@@ -3,12 +3,13 @@ from PySide6.QtWidgets import (QComboBox, QLabel, QTextEdit,
                                QVBoxLayout)
 from PySide6.QtCore import QCalendar, Qt
 from PySide6.QtGui import QFont
+import sqlite3
 
 # HOME PAGE
 # TODO: Update GUI, save idea to a SQL database
 
 class HomePage(QWidget):
-    def __init__(self):
+    def __init__(self, db):
         super().__init__()
         self.title_font = QFont()
         self.title_font.setPointSize(40)
@@ -31,13 +32,9 @@ class HomePage(QWidget):
         ])
 
         self.submit_button = QPushButton("Save")
-        self.submit_button.clicked.connect(lambda: self.save_idea(self.idea_text_box))
+        self.submit_button.clicked.connect(lambda: db.save_idea(self.idea_text_box, self.tags_combobox))
 
         layout.addWidget(self.home_title, alignment=Qt.AlignCenter)
         layout.addWidget(self.idea_text_box, alignment=Qt.AlignCenter)
         layout.addWidget(self.tags_combobox, alignment=Qt.AlignCenter)
         layout.addWidget(self.submit_button)
-
-    def save_idea(self, text_field):
-        print(text_field.toPlainText())
-        text_field.clear()

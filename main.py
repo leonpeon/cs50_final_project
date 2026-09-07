@@ -4,7 +4,7 @@
 # 1. Homepage: text-box, greeting image, tags
 #       - Save what the user has written once submitted.
 #       - Give ability to add tags
-#       - Add an aethetically pleasing home page
+#       - Add an aesthetically pleasing home page
 # 2. Generate prompt: sentence randomiser, image generator, question asker
 #       - Create database of nouns/verbs
 #       - Button press will randomly generate noun-verb-noun sequence
@@ -22,10 +22,13 @@
 
 from PySide6.QtWidgets import QApplication
 from app_pages.main_window import MainWindow
+from app_pages.database import Database
 
 app = QApplication()
+database = Database()
 
-window = MainWindow()
+window = MainWindow(database)
 window.show()
 
 app.exec()
+database.connection.close()
