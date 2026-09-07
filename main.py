@@ -17,3 +17,36 @@
 #       - Create a page which marks which ideas have been acted upon
 # 5. Settings: set word limit, colours, send notification.
 #       - Settings page to manage word limit, GUI colours, and email notifications
+
+from PySide6.QtWidgets import (QApplication, QLabel, QLayout, QGroupBox, QTextEdit, 
+                               QMainWindow, QStackedWidget, QPushButton)
+from PySide6.QtCore import QCalendar, Qt
+from PySide6.QtGui import QFont
+
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Lightbulb Factory")
+        self.showFullScreen()
+
+        menubar = self.menuBar()
+        home = menubar.addAction("Home")
+        help = menubar.addAction("Help")
+        view = menubar.addAction("Home")
+        completed = menubar.addAction("Home")
+        quit = menubar.addAction("Quit")
+        quit.triggered.connect(lambda: self.close())
+
+
+        # Home Page
+
+
+
+app = QApplication()
+
+window = MainWindow()
+window.show()
+
+app.exec()
