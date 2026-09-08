@@ -22,17 +22,46 @@ class ViewPage(QWidget):
         scroll_area.setWidgetResizable(True)
 
         self.ideas_widget = QWidget()
-        ideas_layout = QVBoxLayout(self.ideas_widget)
+        self.ideas_layout = QVBoxLayout(self.ideas_widget)
 
         # Loops through ideas
-        for idea, date, tag, favourite, completed, idea_id in db.view_ideas():
+        self.load_page()
+
+        scroll_area.setWidget(self.ideas_widget)
+        layout.addWidget(scroll_area)
+
+    def confirm_delete(self, id):
+        confirmation = QMessageBox.question(self, "Delete Idea?", 
+                                            "Are you sure you want to delete this idea")
+        if confirmation == QMessageBox.StandardButton.Yes:
+            self.db.delete_idea(id)
+            self.refresh_page()
+
+    def favourites_clicked(self, button):
+        if self.db.update_favourites(button.property("button_id")) == 1:
+            button.setIcon(QIcon("./icons/filled_favourite.png"))
+        else:
+            button.setIcon(QIcon("./icons/favourite.png"))
+
+    def refresh_page(self):
+        while self.ideas_layout.count():
+            item = self.ideas_layout.takeAt(0)
+            widget = item.widget()
+
+            if widget:
+                widget.deleteLater()
+
+        self.load_page()
+
+    def load_page(self):
+        for idea, date, tag, idea_id in self.db.view_ideas():
             one_idea = QWidget()
             one_idea_layout = QGridLayout(one_idea)
             date_label = QLabel(date)
             idea_label = QLabel(idea)
 
             favourite_button = QPushButton()
-            if db.return_favourite_status(idea_id) == 1:
+            if self.db.return_favourite_status(idea_id) == 1:
                 favourite_button.setIcon(QIcon("./icons/filled_favourite.png"))
             else:
                 favourite_button.setIcon(QIcon("./icons/favourite.png"))
@@ -48,8 +77,8 @@ class ViewPage(QWidget):
                 }
             """)
             favourite_button.clicked.connect(lambda checked=False, 
-                                             button=favourite_button: 
-                                             self.favourites_clicked(button))
+                                                button=favourite_button: 
+                                                self.favourites_clicked(button))
 
             completed_button = QPushButton("Mark Done")
             delete_button = QPushButton("Delete")
@@ -57,8 +86,8 @@ class ViewPage(QWidget):
             one_idea.setProperty("tag", tag)
 
             delete_button.clicked.connect(lambda checked=False, 
-                                          id=idea_id: 
-                                          self.confirm_delete(id))
+                                            id=idea_id: 
+                                            self.confirm_delete(id))
 
             one_idea.setObjectName("ideaWidget")
             one_idea.setStyleSheet("""
@@ -73,22 +102,8 @@ class ViewPage(QWidget):
             one_idea_layout.addWidget(favourite_button, 1, 5)
             one_idea_layout.addWidget(completed_button, 2, 5)
             one_idea_layout.addWidget(delete_button, 3, 5)
-            ideas_layout.addWidget(one_idea)
+            self.ideas_layout.addWidget(one_idea)
 
-
-        scroll_area.setWidget(self.ideas_widget)
-        layout.addWidget(scroll_area)
-
-    def confirm_delete(self, id):
-        confirmation = QMessageBox.question(self, "Delete Idea?", 
-                                            "Are you sure you want to delete this idea")
-        if confirmation == QMessageBox.StandardButton.Yes:
-            self.db.delete_idea(id)
-
-    def favourites_clicked(self, button):
-        if self.db.update_favourites(button.property("button_id")) == 1:
-            button.setIcon(QIcon("./icons/filled_favourite.png"))
-        else:
-            button.setIcon(QIcon("./icons/favourite.png"))
+        
 
 

@@ -18,7 +18,7 @@ class Database:
 
 
     def view_ideas(self):
-        ideas = self.db.execute("SELECT idea, date, tag, favourite, completed, id FROM ideas").fetchall()
+        ideas = self.db.execute("SELECT idea, date, tag, id FROM ideas").fetchall()
         return ideas
 
     def delete_idea(self, idea_id):
