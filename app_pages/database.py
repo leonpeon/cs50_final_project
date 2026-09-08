@@ -37,3 +37,7 @@ class Database:
 
         self.connection.commit()
         return favourite_status
+
+    def return_favourite_status(self, idea_id):
+        status = self.db.execute("SELECT favourite FROM ideas WHERE id = ?", (idea_id,)).fetchone()[0]
+        return status

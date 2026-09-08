@@ -32,7 +32,10 @@ class ViewPage(QWidget):
             idea_label = QLabel(idea)
 
             favourite_button = QPushButton()
-            favourite_button.setIcon(QIcon("./icons/favourite.png"))
+            if db.return_favourite_status(idea_id) == 1:
+                favourite_button.setIcon(QIcon("./icons/filled_favourite.png"))
+            else:
+                favourite_button.setIcon(QIcon("./icons/favourite.png"))
             favourite_button.setIconSize(QSize(30, 30))
             favourite_button.setProperty("button_id", idea_id)
             favourite_button.setStyleSheet("""
