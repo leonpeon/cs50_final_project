@@ -18,8 +18,22 @@ class Database:
 
 
     def view_ideas(self):
-        ideas = self.db.execute("SELECT idea, date, tag, favourite, completed FROM ideas").fetchall()
+        ideas = self.db.execute("SELECT idea, date, tag, favourite, completed, id FROM ideas").fetchall()
         return ideas
 
-    def delete_ideas(self):
-        pass
+    def delete_idea(self, idea_id):
+        self.db.execute("DELETE FROM ideas WHERE id = ?", (idea_id,))
+        self.connection.commit()
+
+    def update_favourites(self, idea_id):
+        favourite_status = self.db.execute("SELECT favourite FROM ideas WHERE id = ?", (idea_id,)).fetchone()[0]
+
+        if favourite_status == 0:
+            self.db.execute("UPDATE ideas SET favourite = 1 WHERE id = ?", (idea_id,))
+            favourite_status = 1
+        else:
+            self.db.execute("UPDATE ideas SET favourite = 0 WHERE id = ?", (idea_id,))
+            favourite_status = 0
+
+        self.connection.commit()
+        return favourite_status
