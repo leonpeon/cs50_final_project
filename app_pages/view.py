@@ -30,6 +30,8 @@ class ViewPage(QWidget):
         scroll_area.setWidget(self.ideas_widget)
         layout.addWidget(scroll_area)
 
+        
+
     def confirm_delete(self, id):
         confirmation = QMessageBox.question(self, "Delete Idea?", 
                                             "Are you sure you want to delete this idea")

@@ -51,3 +51,10 @@ class MainWindow(QMainWindow):
 
         quit = menubar.addAction("X")
         quit.triggered.connect(lambda: self.close())
+
+        ### CHECK ###
+        self.pages.currentChanged.connect(self.page_change)
+
+    def page_change(self):
+        if self.pages.currentWidget() == self.view_page:
+            self.view_page.refresh_page()
