@@ -59,4 +59,4 @@ class DayDot(QWidget):
         painter.setBrush(Qt.yellow)
         painter.setPen(Qt.NoPen)
 
-        painter.drawEllipse(3, 3, 9 ,9)
+        painter.drawEllipse(3, 3, 11 ,11)

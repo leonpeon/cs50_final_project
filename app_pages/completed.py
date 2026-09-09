@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import (QLabel, QWidget, QGridLayout, QVBoxLayout, QScrollArea)
+from PySide6.QtWidgets import QLabel, QWidget, QGridLayout, QVBoxLayout, QScrollArea, QTextEdit
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QFont
 
@@ -38,7 +38,17 @@ class CompletedPage(QWidget):
                 one_idea.setFixedSize(QSize(700, 170))
                 one_idea_layout = QGridLayout(one_idea)
                 date_label = QLabel(date)
-                idea_label = QLabel(idea)
+                # Text frame for idea
+                idea_label = QTextEdit()
+                idea_label.setReadOnly(True)
+                idea_label.setPlainText(idea)
+                idea_label.setMaximumHeight(150)
+                idea_label.setStyleSheet("""
+                    QTextEdit {
+                        background-color: transparent;
+                        border: none;
+                    }
+                """)
 
                 one_idea.setProperty("tag", tag)
 

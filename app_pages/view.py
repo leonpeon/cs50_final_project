@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import (QLabel, QPushButton, QWidget, 
                                QVBoxLayout, QGridLayout,
-                               QScrollArea, QMessageBox)
+                               QScrollArea, QMessageBox, QTextEdit)
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QFont, QIcon
 
@@ -41,7 +41,18 @@ class ViewPage(QWidget):
                 one_idea.setFixedSize(QSize(700, 170))
                 one_idea_layout = QGridLayout(one_idea)
                 date_label = QLabel(date)
-                idea_label = QLabel(idea)
+
+                # Text frame for idea
+                idea_label = QTextEdit()
+                idea_label.setReadOnly(True)
+                idea_label.setPlainText(idea)
+                idea_label.setMaximumHeight(150)
+                idea_label.setStyleSheet("""
+                    QTextEdit {
+                        background-color: transparent;
+                        border: none;
+                    }
+                """)
 
                 # Favourite button functionality
                 favourite_button = QPushButton()
