@@ -126,8 +126,6 @@ class ViewPage(QWidget):
             self.db.add_completed(id)
             widget.deleteLater()
             self.refresh_page()
-            self.completedpage.refresh_completed_page()
-
 
     # Updates the favourites icon when clicked, and updates the database
     def favourites_clicked(self, button):

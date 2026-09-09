@@ -7,16 +7,15 @@
 #       - Make better txt file for adjectvies, nouns and verbs
 #       - Replace placeholder word labels with lightbulb images
 #       - If the user decides to use the prompt, it should take them to the main page with prompt (create button)
+#       - Combine prompt page with homepage
 # 3. View page:
 #       - Improve widget UI
-#       - Set box size, so that even one idea won't expand to everything.
 #       - Clicking on the widget should open it in adjacent widget
 #       - Favourited ideas should move to the beginning.
 #       - Add filter search (by date asc, desc, tags)
 # 4. Completed page:
-#       - Show each idea that has been acted on
 #       - Create SQL column for "date_completed"
-#       - Add delete button
+#       - Add delete button?
 # 5. Streaks page:
 #       - Shows yearly calendar of lightbulbs, each lightbulb representing a day
 #       - Hovering over the lightbulb shows you the year

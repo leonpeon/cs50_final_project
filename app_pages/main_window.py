@@ -61,5 +61,5 @@ class MainWindow(QMainWindow):
             self.view_page.refresh_page()
 
         if self.pages.currentWidget() == self.completed_page:
-            self.completed_page.refresh_completed_page()
+            self.completed_page.refresh_page()
         
