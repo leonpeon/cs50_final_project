@@ -1,13 +1,11 @@
 from PySide6.QtWidgets import (QComboBox, QLabel, QTextEdit, 
                                QPushButton, QWidget, 
                                QVBoxLayout)
-from PySide6.QtCore import QCalendar, Qt
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
-import sqlite3
 
-# HOME PAGE
-# TODO: Update GUI, save idea to a SQL database
 
+# Handles the home page
 class HomePage(QWidget):
     def __init__(self, db):
         super().__init__()
@@ -19,9 +17,11 @@ class HomePage(QWidget):
         self.home_title = QLabel("Welcome to the factory")
         self.home_title.setFont(self.title_font)
 
+        # Text box where user can write their idea
         self.idea_text_box = QTextEdit(placeholderText="Write your idea")
         self.idea_text_box.setFixedSize(750, 300)
 
+        # Tags
         self.tags_combobox = QComboBox(placeholderText="Add tag", duplicatesEnabled=False)
         self.tags_combobox.addItems([
             "No tag",
@@ -31,6 +31,7 @@ class HomePage(QWidget):
             "Misc"
         ])
 
+        # Submit button
         self.submit_button = QPushButton("Save")
         self.submit_button.clicked.connect(lambda: db.save_idea(self.idea_text_box, self.tags_combobox))
 

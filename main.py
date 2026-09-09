@@ -1,20 +1,30 @@
 # LIGHTBULB FACTORY
 
 # TODO
-# 1. Homepage: text-box, greeting image, tags
+# 1. Homepage:
 #       - Add an aesthetically pleasing home page
-# 2. Generate prompt: sentence randomiser, image generator, question asker
-#       - Create database of nouns/verbs/ajective
-#       - Improve UI of words - replace placeword labels with lightbulb image
-#       - If the user decides to use the prompt, it should take them to the main page with prompt
-# 3. View page: list of all ideas, that you can rank
-#       - Create a list of all ideas that refreshes, along with and date.
-# 4. Completed page: portfolio of ideas that are acted upon.
-#       - Create a page which marks which ideas have been acted upon
-# 5. Streaks page: shows your streak (Keep the light on)
-#       - Shows list of lightbulbs
-# 6. Settings: set word limit, colours, send notification.
-#       - Settings page to manage word limit, GUI colours, and email notifications
+# 2. Prompt page:
+#       - Make better txt file for adjectvies, nouns and verbs
+#       - Replace placeholder word labels with lightbulb images
+#       - If the user decides to use the prompt, it should take them to the main page with prompt (create button)
+# 3. View page:
+#       - Improve widget UI
+#       - Set box size, so that even one idea won't expand to everything.
+#       - Clicking on the widget should open it in adjacent widget
+#       - Favourited ideas should move to the beginning.
+#       - Add filter search (by date asc, desc, tags)
+# 4. Completed page:
+#       - Show each idea that has been acted on
+#       - Create SQL column for "date_completed"
+#       - Add delete button
+# 5. Streaks page:
+#       - Shows yearly calendar of lightbulbs, each lightbulb representing a day
+#       - Hovering over the lightbulb shows you the year
+#       - Create submenus for each year (2026, 2027)
+# 6. Settings:
+#       - Create setting for word limit
+#       - Create bg colour setting
+#       - Create notification setting
 
 from PySide6.QtWidgets import QApplication
 from app_pages.main_window import MainWindow

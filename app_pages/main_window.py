@@ -1,12 +1,12 @@
-from PySide6.QtWidgets import (QApplication, QComboBox, QLabel, QLayout, QGroupBox, QTextEdit, 
-                               QMainWindow, QStackedWidget, QPushButton, QWidget, 
-                               QVBoxLayout, QHBoxLayout)
+from PySide6.QtWidgets import QMainWindow, QStackedWidget
 from app_pages.home import HomePage
 from app_pages.spark import SparkPage
 from app_pages.view import ViewPage
 from app_pages.completed import CompletedPage
 from app_pages.streak import StreakPage
 
+
+# Handles each page
 class MainWindow(QMainWindow):
     def __init__(self, database):
         super().__init__()
@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
         self.home_page = HomePage(database)
         self.prompt_page = SparkPage()
         self.view_page = ViewPage(database)
-        self.completed_page = CompletedPage()
+        self.completed_page = CompletedPage(database)
         self.streak_page = StreakPage()
 
         # Create stacked widget
@@ -52,9 +52,11 @@ class MainWindow(QMainWindow):
         quit = menubar.addAction("X")
         quit.triggered.connect(lambda: self.close())
 
-        ### CHECK ###
         self.pages.currentChanged.connect(self.page_change)
 
     def page_change(self):
         if self.pages.currentWidget() == self.view_page:
             self.view_page.refresh_page()
+
+        if self.pages.currentWidget() == self.completed_page:
+            self.completed_page.refresh_completed_page()
