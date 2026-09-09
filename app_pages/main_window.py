@@ -54,9 +54,12 @@ class MainWindow(QMainWindow):
 
         self.pages.currentChanged.connect(self.page_change)
 
+
+    # Handles page updates
     def page_change(self):
         if self.pages.currentWidget() == self.view_page:
             self.view_page.refresh_page()
 
         if self.pages.currentWidget() == self.completed_page:
             self.completed_page.refresh_completed_page()
+        
