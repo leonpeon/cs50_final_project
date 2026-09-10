@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QLabel, QWidget, QGridLayout, QVBoxLayout, QHBoxLayout, QScrollArea, QTextEdit
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QFont
+from app_pages.clickable_widget import ClickableWidget
 
 # Handles the completed ideas page
 class CompletedPage(QWidget):
@@ -32,7 +33,7 @@ class CompletedPage(QWidget):
         self.preview_widget.setStyleSheet("""
             QWidget {
                 border: 2px solid black;
-             border-radius: 10px;
+                border-radius: 10px;
         }
         """)
         test_label = QLabel("HELLO!")
@@ -42,7 +43,7 @@ class CompletedPage(QWidget):
         self.load_page()
 
         scroll_area.setWidget(self.ideas_widget)
-        scroll_area.setFixedSize(QSize(700, 500))
+        scroll_area.setFixedSize(QSize(700, 550))
 
 
         self.idea_frame_layout.addWidget(scroll_area)
@@ -55,8 +56,8 @@ class CompletedPage(QWidget):
     def load_page(self):
         for idea, date, tag, idea_id, completed in self.db.view_ideas():
             if completed:
-                one_idea = QWidget()
-                one_idea.setFixedSize(QSize(650, 170))
+                one_idea = ClickableWidget()
+                
                 one_idea_layout = QVBoxLayout(one_idea)
                 date_label = QLabel(date)
 
@@ -73,14 +74,6 @@ class CompletedPage(QWidget):
                 """)
 
                 one_idea.setProperty("tag", tag)
-
-                one_idea.setObjectName("ideaWidget")
-                one_idea.setStyleSheet("""
-                #ideaWidget {
-                    border: 1px solid gray;
-                    border-radius: 5px;
-                }
-                """)
 
                 one_idea_layout.addWidget(date_label, alignment=Qt.AlignCenter)
                 one_idea_layout.addWidget(idea_label)
