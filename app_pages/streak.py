@@ -53,9 +53,9 @@ class DayDot(QWidget):
     def __init__(self, date, db):
         super().__init__()
         self.db = db
-
         self.date = date
         self.setFixedSize(15, 15)
+        self.setToolTip(self.date)
 
     def paintEvent(self, event):
         painter = QPainter(self)

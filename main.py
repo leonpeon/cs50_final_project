@@ -16,8 +16,6 @@
 #       - Create SQL column for "date_completed"
 #       - Add delete button?
 # 5. Streaks page:
-#       - Shows yearly calendar of lightbulbs, each lightbulb representing a day
-#       - Hovering over the lightbulb shows you the year
 #       - Create submenus for each year (2026, 2027)
 # 6. Settings:
 #       - Create setting for word limit
