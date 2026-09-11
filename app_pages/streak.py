@@ -4,10 +4,12 @@ from PySide6.QtGui import QFont, QPainter
 from datetime import date, timedelta
 
 class StreakPage(QWidget):
-    def __init__(self):
+    def __init__(self, db):
         super().__init__()
         self.title_font = QFont()
         self.title_font.setPointSize(40)
+
+        self.db = db
 
         self.page_layout = QVBoxLayout(self)
 
@@ -33,7 +35,8 @@ class StreakPage(QWidget):
         column = 0
 
         while current_date <= end_date:
-            day_dot = DayDot(current_date)
+            current_date_str = current_date.strftime("%d-%m-%Y")
+            day_dot = DayDot(current_date_str, self.db)
 
             if column == 20:
                 row += 1
@@ -47,8 +50,9 @@ class StreakPage(QWidget):
 
 # A widget to represent the calendar dots
 class DayDot(QWidget):
-    def __init__(self, date):
+    def __init__(self, date, db):
         super().__init__()
+        self.db = db
 
         self.date = date
         self.setFixedSize(15, 15)
@@ -56,7 +60,11 @@ class DayDot(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
 
-        painter.setBrush(Qt.yellow)
-        painter.setPen(Qt.NoPen)
+        if self.db.find_date(self.date):
+            painter.setBrush(Qt.yellow)
+            painter.setPen(Qt.NoPen)
+        else:
+            painter.setBrush(Qt.gray)
+            painter.setPen(Qt.NoPen)
 
         painter.drawEllipse(3, 3, 11 ,11)

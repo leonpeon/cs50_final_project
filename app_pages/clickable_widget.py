@@ -58,7 +58,7 @@ class ClickableWidget(QWidget):
         """)
 
         # Sets up the preview widget
-        self.date = "DD-MM-YYYY"
+        self.date = "OO-OO-OOOO"
         self.clicked_idea = "Click an idea for a preview"
 
         self.date_preview = QLabel(self.date)
@@ -75,7 +75,6 @@ class ClickableWidget(QWidget):
 
         self.preview_layout.addWidget(self.date_preview, alignment=Qt.AlignCenter)
         self.preview_layout.addWidget(self.idea_preview)
-        
 
         self.load_page()
 
@@ -227,12 +226,14 @@ class ClickableWidget(QWidget):
             button.setIcon(QIcon("./icons/favourite.png"))
 
 
+# Handles each idea
 class IdeaCard(QWidget):
     def __init__(self, idea_id, parent_page):
         super().__init__()
         self.idea_id = idea_id
         self.parent_page = parent_page
 
+        # Allows styling for each widget
         self.setAttribute(Qt.WA_StyledBackground, True)
 
         # Adds styling to each idea widget

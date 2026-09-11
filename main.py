@@ -10,7 +10,6 @@
 #       - Combine prompt page with homepage
 # 3. View page:
 #       - Improve widget UI
-#       - Clicking on the widget should open it in adjacent widget
 #       - Favourited ideas should move to the beginning.
 #       - Add filter search (by date asc, desc, tags)
 # 4. Completed page:

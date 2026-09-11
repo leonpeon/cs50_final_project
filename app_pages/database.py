@@ -60,3 +60,12 @@ class Database:
     def retrieve_idea(self, idea_id):
         return self.db.execute("SELECT idea, date, tag FROM ideas WHERE id = ?", (idea_id,)).fetchone()
 
+
+    # Returns true if it find a date
+    def find_date(self, date):
+        print(date)
+        dates = self.db.execute("SELECT date FROM ideas WHERE date = ?", (date,)).fetchall()
+        if dates:
+            for d in dates:
+                print(d)
+        return bool(dates)

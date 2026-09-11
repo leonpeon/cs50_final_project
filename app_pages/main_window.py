@@ -19,7 +19,7 @@ class MainWindow(QMainWindow):
         self.prompt_page = SparkPage()
         self.view_page = ViewPage(database)
         self.completed_page = CompletedPage(database)
-        self.streak_page = StreakPage()
+        self.streak_page = StreakPage(database)
 
         # Create stacked widget
         self.pages = QStackedWidget()
