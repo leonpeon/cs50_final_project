@@ -1,6 +1,7 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTextEdit, QGridLayout, QHBoxLayout, QScrollArea
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QLabel, QTextEdit, QGridLayout, 
+                               QHBoxLayout, QScrollArea, QPushButton, QMessageBox)
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont, QIcon
 
 
 class ClickableWidget(QWidget):
@@ -46,7 +47,7 @@ class ClickableWidget(QWidget):
 
         # RIGHT: Creates a widget which shows the idea when clicked
         self.preview_widget = QWidget()
-        self.preview_widget.setFixedSize(QSize(500, 500))
+        self.preview_widget.setFixedSize(QSize(400, 500))
         self.preview_layout = QVBoxLayout(self.preview_widget)
         self.preview_widget.setObjectName("preview_widget")
         self.preview_widget.setStyleSheet("""
@@ -80,7 +81,7 @@ class ClickableWidget(QWidget):
 
         # Add elements to the ideas widget
         scroll_area.setWidget(self.scroll_widget)
-        scroll_area.setFixedSize(QSize(600, 500))
+        scroll_area.setFixedSize(QSize(700, 500))
 
         self.idea_frame_layout.addWidget(scroll_area)
         self.idea_frame_layout.addWidget(self.preview_widget)
@@ -139,6 +140,48 @@ class ClickableWidget(QWidget):
             self.one_idea_layout.addWidget(date_label, 0, 0, 1, 5, alignment=Qt.AlignCenter)
             self.one_idea_layout.addWidget(idea_label, 1, 0, 3, 4)
 
+        # Adds extra functions if it is the view page
+        if self.is_view_page:
+            # Favourite button functionality
+            favourite_button = QPushButton()
+            if self.db.return_favourite_status(id) == 1:
+                favourite_button.setIcon(QIcon("./icons/filled_favourite.png"))
+            else:
+                favourite_button.setIcon(QIcon("./icons/favourite.png"))
+            favourite_button.setIconSize(QSize(30, 30))
+            favourite_button.setProperty("button_id", id)
+            favourite_button.setStyleSheet("""
+                QPushButton {
+                border: none;
+                background: transparent;
+                }
+                QPushButton:hover {
+                    background: transparent;
+                }
+            """)
+            favourite_button.clicked.connect(lambda checked=False, 
+                                                button=favourite_button: 
+                                                self.favourites_clicked(button))
+
+            # Delete button functionality
+            delete_button = QPushButton("Delete")
+            delete_button.clicked.connect(lambda checked=False, 
+                                            id=id: 
+                                            self.confirm_delete(id))
+
+            # Completed button functionality
+            completed_button = QPushButton("Mark Done")
+            completed_button.clicked.connect(lambda checked=False,
+                                                id=id,
+                                                widget=self.one_idea:
+                                                self.confirm_complete(id, widget))
+
+            # Add each element to the widget
+            self.one_idea_layout.addWidget(favourite_button, 1, 5)
+            self.one_idea_layout.addWidget(completed_button, 2, 5)
+            self.one_idea_layout.addWidget(delete_button, 3, 5)
+            self.scroll_layout.addWidget(self.one_idea)
+
 
     # Refreshes page upon each deletion or after idea is marked complete
     def refresh_page(self):
@@ -157,6 +200,31 @@ class ClickableWidget(QWidget):
         self.clicked_idea = idea
         self.date_preview.setText(date)
         self.idea_preview.setPlainText(self.clicked_idea)
+
+    # Shows a messagebox asking the user if they are sure they want to delete an idea
+    def confirm_delete(self, id):
+        confirmation = QMessageBox.question(self, "Delete Idea?", 
+                                            "Are you sure you want to delete this idea?")
+        if confirmation == QMessageBox.StandardButton.Yes:
+            self.db.delete_idea(id)
+            self.refresh_page()
+
+
+    # Asks the user if they are sure they want to mark an idea as complete
+    def confirm_complete(self, id, widget):
+        confirmation = QMessageBox.question(self, "Mark Complete?",
+                                            "Do you want to mark this idea as complete?")
+        if confirmation == QMessageBox.StandardButton.Yes:
+            self.db.add_completed(id)
+            widget.deleteLater()
+            self.refresh_page()
+
+    # Updates the favourites icon when clicked, and updates the database
+    def favourites_clicked(self, button):
+        if self.db.update_favourites(button.property("button_id")) == 1:
+            button.setIcon(QIcon("./icons/filled_favourite.png"))
+        else:
+            button.setIcon(QIcon("./icons/favourite.png"))
 
 
 class IdeaCard(QWidget):
