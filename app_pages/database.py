@@ -56,3 +56,7 @@ class Database:
         self.connection.commit()
 
 
+    # Retrieves one idea
+    def retrieve_idea(self, idea_id):
+        return self.db.execute("SELECT idea, date, tag FROM ideas WHERE id = ?", (idea_id,)).fetchone()
+

@@ -36,8 +36,9 @@ class CompletedPage(QWidget):
                 border-radius: 10px;
         }
         """)
-        test_label = QLabel("HELLO!")
-        self.preview_layout.addWidget(test_label)
+
+        idea_preview = QLabel("HELLO!")
+        self.preview_layout.addWidget(idea_preview)
 
         # Loops through ideas
         self.load_page()
@@ -56,27 +57,7 @@ class CompletedPage(QWidget):
     def load_page(self):
         for idea, date, tag, idea_id, completed in self.db.view_ideas():
             if completed:
-                one_idea = ClickableWidget()
-                
-                one_idea_layout = QVBoxLayout(one_idea)
-                date_label = QLabel(date)
-
-                # Text frame for idea
-                idea_label = QTextEdit()
-                idea_label.setReadOnly(True)
-                idea_label.setPlainText(idea)
-                idea_label.setMaximumHeight(150)
-                idea_label.setStyleSheet("""
-                    QTextEdit {
-                        background-color: transparent;
-                        border: none;
-                    }
-                """)
-
-                one_idea.setProperty("tag", tag)
-
-                one_idea_layout.addWidget(date_label, alignment=Qt.AlignCenter)
-                one_idea_layout.addWidget(idea_label)
+                one_idea = ClickableWidget(date, idea, idea_id, self.db)
                 self.ideas_layout.addWidget(one_idea)
 
 
