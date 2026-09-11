@@ -4,73 +4,9 @@ from PySide6.QtGui import QFont
 from app_pages.clickable_widget import ClickableWidget
 
 # Handles the completed ideas page
-class CompletedPage(QWidget):
+class CompletedPage(ClickableWidget):
     def __init__(self, db):
-        super().__init__()
-        layout = QVBoxLayout(self)
-        self.title_font = QFont()
-        self.title_font.setPointSize(40)
-        self.db = db
-
-        self.title = QLabel("Completed Ideas")
-        self.title.setFont(self.title_font)
-
-        layout.addWidget(self.title)
-
-        # Frame for ideas and the side preview
-        self.idea_frame = QWidget()
-        self.idea_frame_layout = QHBoxLayout(self.idea_frame)
-
-        # Creates ability to scroll through ideas
-        scroll_area = QScrollArea()
-
-        self.ideas_widget = QWidget()
-        self.ideas_layout = QVBoxLayout(self.ideas_widget)
-
-        # Adds a preview frame for the idea
-        self.preview_widget = QWidget()
-        self.preview_layout = QHBoxLayout(self.preview_widget)
-        self.preview_widget.setStyleSheet("""
-            QWidget {
-                border: 2px solid black;
-                border-radius: 10px;
-        }
-        """)
-
-        idea_preview = QLabel("HELLO!")
-        self.preview_layout.addWidget(idea_preview)
-
-        # Loops through ideas
-        self.load_page()
-
-        scroll_area.setWidget(self.ideas_widget)
-        scroll_area.setFixedSize(QSize(700, 550))
-
-
-        self.idea_frame_layout.addWidget(scroll_area)
-        self.idea_frame_layout.addWidget(self.preview_widget)
-
-        layout.addWidget(self.idea_frame)
-
-
-    # Loads each idea
-    def load_page(self):
-        for idea, date, tag, idea_id, completed in self.db.view_ideas():
-            if completed:
-                one_idea = ClickableWidget(date, idea, idea_id, self.db)
-                self.ideas_layout.addWidget(one_idea)
-
-
-    # Refreshes page upon each deletion or after idea is marked complete
-    def refresh_page(self):
-        while self.ideas_layout.count():
-            item = self.ideas_layout.takeAt(0)
-            widget = item.widget()
-
-            if widget:
-                widget.deleteLater()
-
-        self.load_page()
+        super().__init__(page=False, db=db)
 
 
         
