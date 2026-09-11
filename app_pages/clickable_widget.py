@@ -23,7 +23,6 @@ class ClickableWidget(QWidget):
 
         # Sets size of the frame, and allows widget inside to have their own styling
         self.setFixedSize(QSize(1150, 710))
-        self.setAttribute(Qt.WA_StyledBackground, True)
 
         # Establishes title for each page
         if self.is_view_page:
@@ -48,7 +47,7 @@ class ClickableWidget(QWidget):
         # RIGHT: Creates a widget which shows the idea when clicked
         self.preview_widget = QWidget()
         self.preview_widget.setFixedSize(QSize(500, 500))
-        self.preview_layout = QHBoxLayout(self.preview_widget)
+        self.preview_layout = QVBoxLayout(self.preview_widget)
         self.preview_widget.setObjectName("preview_widget")
         self.preview_widget.setStyleSheet("""
             #preview_widget {
@@ -57,9 +56,25 @@ class ClickableWidget(QWidget):
         }
         """)
 
-        ### TODO
-        idea_preview = QLabel("HELLO!")
-        self.preview_layout.addWidget(idea_preview)
+        # Sets up the preview widget
+        self.date = "DD-MM-YYYY"
+        self.clicked_idea = "Click an idea for a preview"
+
+        self.date_preview = QLabel(self.date)
+
+        self.idea_preview = QTextEdit()
+        self.idea_preview.setReadOnly(True)
+        self.idea_preview.setPlainText(self.clicked_idea)
+        self.idea_preview.setStyleSheet("""
+            QTextEdit {
+                background-color: transparent;
+                border: none;
+            }
+        """)
+
+        self.preview_layout.addWidget(self.date_preview, alignment=Qt.AlignCenter)
+        self.preview_layout.addWidget(self.idea_preview)
+        
 
         self.load_page()
 
@@ -80,7 +95,7 @@ class ClickableWidget(QWidget):
             # If COMPLETED page
             if not self.is_view_page:
                 if completed:
-                    self.one_idea = QWidget()
+                    self.one_idea = IdeaCard(idea_id, self)
                     self.one_idea_layout = QVBoxLayout(self.one_idea)
                     self.clickable_idea(idea, date, idea_id)
                     self.scroll_layout.addWidget(self.one_idea)
@@ -88,7 +103,7 @@ class ClickableWidget(QWidget):
             # If VIEW page
             else:
                 if not completed:
-                    self.one_idea = QWidget()
+                    self.one_idea = IdeaCard(idea_id, self)
                     self.one_idea_layout = QGridLayout(self.one_idea)
                     self.clickable_idea(idea, date, idea_id)
                     self.scroll_layout.addWidget(self.one_idea)
@@ -124,8 +139,36 @@ class ClickableWidget(QWidget):
             self.one_idea_layout.addWidget(date_label, 0, 0, 1, 5, alignment=Qt.AlignCenter)
             self.one_idea_layout.addWidget(idea_label, 1, 0, 3, 4)
 
+
+    # Refreshes page upon each deletion or after idea is marked complete
+    def refresh_page(self):
+        while self.scroll_layout.count():
+            item = self.scroll_layout.takeAt(0)
+            widget = item.widget()
+
+            if widget:
+                widget.deleteLater()
+
+        self.load_page()
+
+
+    def handle_idea_click(self, idea_id):
+        idea, date, tag = self.db.retrieve_idea(idea_id)
+        self.clicked_idea = idea
+        self.date_preview.setText(date)
+        self.idea_preview.setPlainText(self.clicked_idea)
+
+
+class IdeaCard(QWidget):
+    def __init__(self, idea_id, parent_page):
+        super().__init__()
+        self.idea_id = idea_id
+        self.parent_page = parent_page
+
+        self.setAttribute(Qt.WA_StyledBackground, True)
+
         # Adds styling to each idea widget
-        self.one_idea.setObjectName("idea_widget")
+        self.setObjectName("idea_widget")
         self.setStyleSheet("""
             #idea_widget {
                 border: 1px solid gray;
@@ -140,19 +183,5 @@ class ClickableWidget(QWidget):
         # Turns cursor to hand when on a clickable area
         self.setCursor(Qt.PointingHandCursor)
 
-
     def mousePressEvent(self, event):
-        # Get the widget information
-        idea, date, tag = self.db.retrieve_idea(self.id)
-        print("I'm clicked")
-
-    # Refreshes page upon each deletion or after idea is marked complete
-    def refresh_page(self):
-        while self.scroll_layout.count():
-            item = self.scroll_layout.takeAt(0)
-            widget = item.widget()
-
-            if widget:
-                widget.deleteLater()
-
-        self.load_page()
+        self.parent_page.handle_idea_click(self.idea_id)
